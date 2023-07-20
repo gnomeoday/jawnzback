@@ -1,0 +1,53 @@
+{
+  "generator-jhipster": {
+    "applicationType": "microservice",
+    "authenticationType": "oauth2",
+    "baseName": "jawnzback",
+    "blueprints": [],
+    "buildTool": "maven",
+    "cacheProvider": "no",
+    "clientFramework": "no",
+    "creationTimestamp": 1689810000719,
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "dtoSuffix": "DTO",
+    "enableGradleEnterprise": false,
+    "enableHibernateCache": false,
+    "enableSwaggerCodegen": true,
+    "enableTranslation": true,
+    "entitySuffix": "",
+    "jhiPrefix": "jwn",
+    "jhipsterVersion": "7.9.3",
+    "jwtSecretKey": "ZTVmYmI0MzBiZTlkOTMyZGRkNjY4NzMwZTAyOTczMjcwMDUyMDY0MjY2MWY5ZjZhYTI4NDUyOWI2YjY1NjJkYjYyYWM5MTM2ZmU0YWI5ZWNiMDkyOTM4NTY2MWFjMjNlYjljNzYyZmU2ODBiNWJjYWE5N2E1ODJkZDZhYzUyYTg=",
+    "languages": ["en", "fr"],
+    "messageBroker": "kafka",
+    "microfrontend": false,
+    "microfrontends": [],
+    "nativeLanguage": "en",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-es-entity-reindexer",
+        "version": "1.0.1"
+      },
+      {
+        "name": "generator-jhipster-kafka",
+        "version": "1.0.1"
+      }
+    ],
+    "packageName": "com.jawnz.back",
+    "pages": [],
+    "prodDatabaseType": "mongodb",
+    "reactive": true,
+    "searchEngine": "elasticsearch",
+    "serverPort": "8081",
+    "serverSideOptions": ["searchEngine:elasticsearch", "messageBroker:kafka", "enableSwaggerCodegen:true"],
+    "serviceDiscoveryType": "eureka",
+    "skipCheckLengthOfIdentifier": false,
+    "skipClient": true,
+    "skipFakeData": false,
+    "skipUserManagement": true,
+    "testFrameworks": ["cucumber"],
+    "websocket": false,
+    "withAdminUi": false
+  }
+}
