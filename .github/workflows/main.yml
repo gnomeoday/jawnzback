@@ -1,0 +1,65 @@
+name: Application CI
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      deploy-heroku:
+        description: 'Heroku Deploy (y/n)?'
+        default: 'n'
+        required: true
+      appname:
+        description: 'Name of Heroku app to deploy to (used if deploying to Heroku)'
+        default: 'jawnzback'
+        required: false
+  pull_request:
+jobs:
+  pipeline:
+    name: jawnzback pipeline
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
+    timeout-minutes: 40
+    env:
+      SPRING_OUTPUT_ANSI_ENABLED: DETECT
+      SPRING_JPA_SHOW_SQL: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 11
+      #- name: Install Snyk CLI
+      #   run: |
+      #    curl -Lo ./snyk $(curl -s https://api.github.com/repos/snyk/snyk/releases/latest | grep "browser_download_url.*snyk-linux" | cut -d ':' -f 2,3 | tr -d \" | tr -d ' ')
+      #    chmod +x snyk
+      #- name: Snyk test
+      #  continue-on-error: true
+      #  run: ./snyk test --all-projects
+      #  env:
+      #    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #- name: Snyk monitor
+      #  continue-on-error: true
+      #  run: ./snyk monitor --all-projects
+      #  env:
+      #    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Run backend test
+        run: |
+          chmod +x mvnw
+           run ci:backend:test
+      - name: Package application
+        run: run java:jar:prod
+      - name: Deploy to Heroku
+        if: github.event.inputs.deploy-heroku == 'y' || contains(github.event.head_commit.message, '[deploy]')
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          if [ ! -z "$HEROKU_API_KEY" ]; then
+              ./mvnw -ntp com.heroku.sdk:heroku-maven-plugin:2.0.5:deploy -DskipTests -Pprod -Dheroku.buildpacks=heroku/jvm -Dheroku.appName=jawnzback
+          else
+              echo No HEROKU_API_KEY, skipping...
+          fi
+      - name: Build and publish docker image
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+        run: |
+          GIT_TAG=:${GITHUB_REF#refs/tags/}
+          DOCKER_TAG=${GIT_TAG#:refs/heads/main}
+          ./mvnw -ntp jib:build -Djib.to.image=jhipster/jawnzback${DOCKER_TAG} -Djib.to.auth.username="${{ secrets.DOCKER_USERNAME }}" -Djib.to.auth.password="${{ secrets.DOCKER_PASSWORD }}" -Pprod
