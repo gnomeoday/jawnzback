@@ -58,7 +58,6 @@
     "generator-jhipster": "7.9.3",
     "generator-jhipster-es-entity-reindexer": "1.0.1",
     "generator-jhipster-kafka": "1.0.1",
-    "husky": "7.0.4",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
     "prettier-plugin-java": "1.6.2",
