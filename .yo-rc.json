@@ -16,6 +16,9 @@
     "enableSwaggerCodegen": true,
     "enableTranslation": true,
     "entitySuffix": "",
+    "herokuAppName": "jawnzback",
+    "herokuDeployType": "jar",
+    "herokuJavaVersion": "11",
     "jhiPrefix": "jwn",
     "jhipsterVersion": "7.9.3",
     "jwtSecretKey": "ZTVmYmI0MzBiZTlkOTMyZGRkNjY4NzMwZTAyOTczMjcwMDUyMDY0MjY2MWY5ZjZhYTI4NDUyOWI2YjY1NjJkYjYyYWM5MTM2ZmU0YWI5ZWNiMDkyOTM4NTY2MWFjMjNlYjljNzYyZmU2ODBiNWJjYWE5N2E1ODJkZDZhYzUyYTg=",
@@ -47,6 +50,7 @@
     "skipFakeData": false,
     "skipUserManagement": true,
     "testFrameworks": ["cucumber"],
+    "useOkta": false,
     "websocket": false,
     "withAdminUi": false
   }
