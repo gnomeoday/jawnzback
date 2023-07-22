@@ -19,14 +19,22 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
     timeout-minutes: 40
     env:
+      NODE_VERSION: 16.17.0
       SPRING_OUTPUT_ANSI_ENABLED: DETECT
       SPRING_JPA_SHOW_SQL: false
+      JHI_DISABLE_WEBPACK_LOGS: true
+      NG_CLI_ANALYTICS: false
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.17.0
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: 11
+      - name: Install node.js packages
+        run: npm install
       #- name: Install Snyk CLI
       #   run: |
       #    curl -Lo ./snyk $(curl -s https://api.github.com/repos/snyk/snyk/releases/latest | grep "browser_download_url.*snyk-linux" | cut -d ':' -f 2,3 | tr -d \" | tr -d ' ')
@@ -44,9 +52,9 @@ jobs:
       - name: Run backend test
         run: |
           chmod +x mvnw
-           run ci:backend:test
+          npm run ci:backend:test
       - name: Package application
-        run: run java:jar:prod
+        run: npm run java:jar:prod
       - name: Deploy to Heroku
         if: github.event.inputs.deploy-heroku == 'y' || contains(github.event.head_commit.message, '[deploy]')
         env:
