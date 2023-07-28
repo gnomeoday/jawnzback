@@ -1,9 +1,9 @@
 package com.jawnz.back.repository;
 
 import com.jawnz.back.domain.Authority;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
 
 /**
- * Spring Data MongoDB repository for the {@link Authority} entity.
+ * Spring Data R2DBC repository for the {@link Authority} entity.
  */
-public interface AuthorityRepository extends ReactiveMongoRepository<Authority, String> {}
+public interface AuthorityRepository extends R2dbcRepository<Authority, String> {}

@@ -5,8 +5,10 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 
 import com.jawnz.back.IntegrationTest;
+import com.jawnz.back.config.Constants;
 import com.jawnz.back.config.TestSecurityConfiguration;
 import com.jawnz.back.domain.User;
+import com.jawnz.back.repository.EntityManager;
 import com.jawnz.back.repository.UserRepository;
 import com.jawnz.back.repository.search.UserSearchRepository;
 import com.jawnz.back.security.AuthoritiesConstants;
@@ -42,6 +44,9 @@ class PublicUserResourceIT {
     private UserSearchRepository mockUserSearchRepository;
 
     @Autowired
+    private EntityManager em;
+
+    @Autowired
     private WebTestClient webTestClient;
 
     private User user;
@@ -53,13 +58,13 @@ class PublicUserResourceIT {
 
     @BeforeEach
     public void initTest() {
-        user = UserResourceIT.initTestUser(userRepository);
+        user = UserResourceIT.initTestUser(userRepository, em);
     }
 
     @Test
     void getAllPublicUsers() {
         // Initialize the database
-        userRepository.save(user).block();
+        userRepository.create(user).block();
 
         // Get all the users
         UserDTO foundUser = webTestClient
