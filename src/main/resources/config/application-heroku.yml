@@ -20,7 +20,14 @@ eureka:
       defaultZone: ${JHIPSTER_REGISTRY_URL}/eureka/
 
 spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+    hikari:
+      maximumPoolSize: 8
   elasticsearch:
-    uris: ${ELASTIC_URL}
+    uris: ${BONSAI_URL}
 server:
   port: ${PORT:8080}
