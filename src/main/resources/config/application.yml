@@ -64,7 +64,19 @@ management:
       base-path: /management
       exposure:
         include:
-          ['configprops', 'env', 'health', 'info', 'jhimetrics', 'jhiopenapigroups', 'logfile', 'loggers', 'prometheus', 'threaddump']
+          [
+            'configprops',
+            'env',
+            'health',
+            'info',
+            'jhimetrics',
+            'jhiopenapigroups',
+            'logfile',
+            'loggers',
+            'prometheus',
+            'threaddump',
+            'liquibase',
+          ]
   endpoint:
     health:
       show-details: when_authorized
@@ -75,7 +87,7 @@ management:
         liveness:
           include: livenessState
         readiness:
-          include: readinessState
+          include: readinessState,db
     jhimetrics:
       enabled: true
   info:
@@ -111,11 +123,9 @@ management:
           autotime:
             enabled: true
 
-mongock:
-  migration-scan-package:
-    - com.jawnz.back.config.dbmigrations
-
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.actuate.autoconfigure.metrics.jdbc.DataSourcePoolMetricsAutoConfiguration
   application:
     name: jawnzback
   cloud:
